@@ -12,7 +12,7 @@ import SwiftUI
 struct ContentView: View {
     
     @State var sizes = ["Small", "Medium", "Large"]
-    @State private var selectedSize = "Medium" // Default selected size for segmented control
+    @State private var selectedSize = "Medium"
 
     @State var userName = ""
     @State var choosePepperoni: Bool = false
@@ -22,13 +22,12 @@ struct ContentView: View {
     
     var body: some View {
         NavigationView {
-            VStack(alignment: .leading, spacing: 20) {
+            VStack(alignment: .leading, spacing: 15) {
                 
                 Text("Midterm Exam")
                     .font(.largeTitle)
                     .fontWeight(.bold)
                 
-                // User Name Text Field
                 Text("Order View")
                     .font(.system(size: 30))
                     .multilineTextAlignment(.center)
@@ -37,7 +36,6 @@ struct ContentView: View {
                     .border(.blue)
                     .textFieldStyle(RoundedBorderTextFieldStyle())
                 
-                // Pizza Size Selection (Segmented Control)
                 Text("Select Pizza Size:")
                     .font(.headline)
                 
@@ -48,7 +46,6 @@ struct ContentView: View {
                 }
                 .pickerStyle(SegmentedPickerStyle())
                 
-                // Pizza Toppings Selection
                 Text("Select Pizza Topping:")
                     .font(.headline)
                 
@@ -56,12 +53,15 @@ struct ContentView: View {
                 Toggle("Pepperoni", isOn: $choosePepperoni)
                 Toggle("Olive", isOn: $chooseOlive)
                 
-                // Quantity Input Field
                 TextField("Enter number of Pizzas", text: $chooseQuantity)
                     .border(.blue)
                     .textFieldStyle(RoundedBorderTextFieldStyle())
                 
-                // NavigationLink for placing the order and navigating to DisplayPizza
+                if !isValidSelection() {
+                    Text("Please put your name, select a size, and choose quantity")
+                        .foregroundColor(.red)
+                            }
+            
                 NavigationLink(destination: DisplayPizza(
                     name: $userName,
                     size: $selectedSize,
@@ -85,6 +85,12 @@ struct ContentView: View {
             }
             .padding()
         }
+    }
+    func isValidSelection() -> Bool {
+        return
+        userName != "" &&
+        selectedSize != "Select Size" &&
+        chooseQuantity != ""
     }
 }
 
